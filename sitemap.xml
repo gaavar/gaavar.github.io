@@ -2,14 +2,14 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://officiallocal.host/</loc>
+    <loc>https://gaavar.github.io/</loc>
   </url><url>
-    <loc>https://officiallocal.host/categories/</loc>
+    <loc>https://gaavar.github.io/categories/</loc>
   </url><url>
-    <loc>https://officiallocal.host/posts/</loc>
+    <loc>https://gaavar.github.io/posts/</loc>
   </url><url>
-    <loc>https://officiallocal.host/posts/testpost/</loc>
+    <loc>https://gaavar.github.io/posts/testpost/</loc>
   </url><url>
-    <loc>https://officiallocal.host/tags/</loc>
+    <loc>https://gaavar.github.io/tags/</loc>
   </url>
 </urlset>
