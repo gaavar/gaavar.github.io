@@ -2,17 +2,14 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://gaavar.github.io/</loc>
-    <lastmod>2022-11-23T15:28:18-08:00</lastmod>
+    <loc>https://officiallocal.host/</loc>
   </url><url>
-    <loc>https://gaavar.github.io/posts/</loc>
-    <lastmod>2022-11-23T15:28:18-08:00</lastmod>
+    <loc>https://officiallocal.host/categories/</loc>
   </url><url>
-    <loc>https://gaavar.github.io/posts/testpost/</loc>
-    <lastmod>2022-11-23T15:28:18-08:00</lastmod>
+    <loc>https://officiallocal.host/posts/</loc>
   </url><url>
-    <loc>https://gaavar.github.io/categories/</loc>
+    <loc>https://officiallocal.host/posts/testpost/</loc>
   </url><url>
-    <loc>https://gaavar.github.io/tags/</loc>
+    <loc>https://officiallocal.host/tags/</loc>
   </url>
 </urlset>

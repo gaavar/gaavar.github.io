@@ -2,17 +2,16 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Anu Gaavar</title>
-    <link>https://gaavar.github.io/</link>
+    <link>https://officiallocal.host/</link>
     <description>Recent content on Anu Gaavar</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Wed, 23 Nov 2022 15:28:18 -0800</lastBuildDate><atom:link href="https://gaavar.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <language>en-us</language><atom:link href="https://officiallocal.host/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Testpost</title>
-      <link>https://gaavar.github.io/posts/testpost/</link>
-      <pubDate>Wed, 23 Nov 2022 15:28:18 -0800</pubDate>
+      <title>Reading List</title>
+      <link>https://officiallocal.host/posts/testpost/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://gaavar.github.io/posts/testpost/</guid>
+      <guid>https://officiallocal.host/posts/testpost/</guid>
       <description>This is test content
 def epic(): print(&amp;#34;This is epic&amp;#34;) </description>
     </item>
