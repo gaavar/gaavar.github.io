@@ -5,7 +5,45 @@
     <link>https://gaavar.github.io/</link>
     <description>Recent content on Anu Gaavar</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language><atom:link href="https://gaavar.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <language>en-us</language>
+    <lastBuildDate>Mon, 02 Jan 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://gaavar.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Ethernaut Writeup (Work In Progress)</title>
+      <link>https://gaavar.github.io/posts/ethernaut/</link>
+      <pubDate>Mon, 02 Jan 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://gaavar.github.io/posts/ethernaut/</guid>
+      <description>Background and Motivation In case you&amp;rsquo;re wondering what&amp;rsquo;s Ethernaut?
+I started this as an excuse to continue exploring EVM engineering and security challenges. My goal for this year is to discover smart contract security bugs in the wild and responsibly disclose them. The real life vulnerabilities are probably more complex but this a fun starting point.
+01 - Fallback This was pretty simple. I used the browser developer console for this challenge.</description>
+      <content>&lt;h4 id=&#34;background-and-motivation&#34;&gt;Background and Motivation&lt;/h4&gt;
+&lt;p&gt;In case you&amp;rsquo;re wondering &lt;a href=&#34;https://ethernaut.openzeppelin.com/&#34;&gt;what&amp;rsquo;s Ethernaut?&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;I started this as an excuse to continue exploring EVM engineering and security challenges. My goal for this year is to discover smart contract security bugs in the wild and responsibly disclose them. The real life vulnerabilities are probably more complex but this a fun starting point.&lt;/p&gt;
+&lt;h5 id=&#34;01---fallback&#34;&gt;01 - Fallback&lt;/h5&gt;
+&lt;p&gt;This was pretty simple. I used the browser developer console for this challenge.&lt;/p&gt;
+&lt;p&gt;To become the owner of this contract, we need to call &lt;code&gt;receive&lt;/code&gt; function which sets the owner.
+Since we need to satisfy the &lt;code&gt;require&lt;/code&gt; constraints, we must first call &lt;code&gt;contribute&lt;/code&gt; with a small matic.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;contract&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;contribute&lt;/span&gt;({&lt;span style=&#34;color:#a6e22e&#34;&gt;value&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;toWei&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;0.00001&amp;#39;&lt;/span&gt;)})
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Then, we can assume ownernship with a payload like the one below that satisfies the contraints.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;await&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;web3&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;eth&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;sendTransaction&lt;/span&gt;({&lt;span style=&#34;color:#a6e22e&#34;&gt;from&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&amp;lt;my address&amp;gt;&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;to&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;contract address&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;value&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;toWei&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;0.0001&amp;#39;&lt;/span&gt;)})
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Finally, we drain the wallet.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;await&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;contract&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;withdraw&lt;/span&gt;()
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h5 id=&#34;02---fallout&#34;&gt;02 - Fallout&lt;/h5&gt;
+&lt;p&gt;This one seemed to be okay at the first glance. But, then the usage of a function as a contructor caught my attention.&lt;/p&gt;
+&lt;p&gt;So, assuming ownership was very straightfoward.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;await&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;contract&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Fal1out&lt;/span&gt;({&lt;span style=&#34;color:#a6e22e&#34;&gt;value&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;toWei&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;0.0000001&amp;#39;&lt;/span&gt;)})
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h5 id=&#34;03---coin-flip&#34;&gt;03 - Coin Flip&lt;/h5&gt;
+&lt;p&gt;To clear this stage, the coin flip needs to be guesssed correctly straight for 10 times consecutively. The &lt;code&gt;block.number&lt;/code&gt; seems to be the source of the pseudo random process which determines the &lt;code&gt;side&lt;/code&gt;. It would be difficult to ensure that our transactions are included in particular blocks to ensure correct &lt;code&gt;_guess&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;After some research, it became clear to me that an easy way to solve this challenge is to create another smart contract that calls the vulnerable smart contract, passing the computed &lt;code&gt;_guess&lt;/code&gt;. Then, solving the challenge is very easy: submit 10 transactions from your smart contract.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/gaavar/anu-x-ethernaut/blob/main/3-coinflip.sol&#34;&gt;Here&amp;rsquo;s&lt;/a&gt; my contract for reference.&lt;/p&gt;
+&lt;h5 id=&#34;04---telephone&#34;&gt;04 - Telephone&lt;/h5&gt;
+&lt;p&gt;To become an owner of this contract, I have to ensure that &lt;code&gt;tx.origin&lt;/code&gt; is not the same as &lt;code&gt;msg.sender&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;The key insight for this is explained in &lt;a href=&#34;https://ethereum.stackexchange.com/questions/1891/whats-the-difference-between-msg-sender-and-tx-origin&#34;&gt;this stackoverflow post&lt;/a&gt;!&lt;/p&gt;
+&lt;p&gt;And so, I just made a contract with a function to call the vulnerable contract such that the &lt;code&gt;tx.origin&lt;/code&gt; is my externally owned account and the &lt;code&gt;msg.sender&lt;/code&gt; is my contract.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/gaavar/anu-x-ethernaut/blob/main/4-telephone.sol&#34;&gt;Here&amp;rsquo;s&lt;/a&gt; my contract for reference.&lt;/p&gt;
+</content>
+    </item>
+    
     <item>
       <title>About</title>
       <link>https://gaavar.github.io/about/</link>
