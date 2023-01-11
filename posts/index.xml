@@ -95,6 +95,11 @@ selfdestruct.
 &lt;p&gt;I also learnt more about better patterns to use when writing contracts to send &amp;amp; receive money.&lt;/p&gt;
 &lt;p&gt;&lt;a href=&#34;https://web.archive.org/web/20220122122006/https://consensys.github.io/smart-contract-best-practices/recommendations/&#34;&gt;Reference 1. Sections: Don&amp;rsquo;t use transfer() or send() + Favor pull over push for external calls&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href=&#34;https://consensys.net/diligence/blog/2019/09/stop-using-soliditys-transfer-now/&#34;&gt;Reference 2. Stop Using Solidity&amp;rsquo;s transfer() Now &lt;/a&gt;&lt;/p&gt;
+&lt;h5 id=&#34;10---re-entrancy&#34;&gt;10 - Re-entrancy&lt;/h5&gt;
+&lt;p&gt;The challenge here was to reduce the balance of &lt;code&gt;Reentrance&lt;/code&gt; contract to zero.&lt;/p&gt;
+&lt;p&gt;Given the popularity of the re-entrancy attacks, I knew exactly what to do: create a smart contract that receives money, &lt;code&gt;donate&lt;/code&gt; it to the vulnerable contract and then call &lt;code&gt;withdraw&lt;/code&gt;. In addition, I created a &lt;code&gt;receive&lt;/code&gt; function which would transfer the amount back to me and call &lt;code&gt;withdraw&lt;/code&gt; again creating a cycle where I would keep receieving money in small amounts until the contract&amp;rsquo;s balance is zero.&lt;/p&gt;
+&lt;p&gt;For me, the hard part was figuring out how to call the &lt;code&gt;Reentrance&lt;/code&gt;&amp;rsquo;s methods inside my contract without importing the contract since it was using an old solidity compiler with old &lt;code&gt;SafeMath&lt;/code&gt; library which I assumed would be tricky to import/locate. And so, I attempted to use low level functions such as &lt;code&gt;abi.encodeWithSignature&lt;/code&gt; and &lt;code&gt;call&lt;/code&gt; but encountered issues which would revert my calls to &lt;code&gt;withdraw&lt;/code&gt;. So, I went reconsidered importing contracts and it worked just fine!&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/gaavar/anu-x-ethernaut/blob/main/10-reentrancy.sol&#34;&gt;Here&amp;rsquo;s&lt;/a&gt; my contract for reference.&lt;/p&gt;
 </content>
     </item>
     

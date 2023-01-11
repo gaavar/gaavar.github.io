@@ -248,6 +248,11 @@ selfdestruct.
 <p>I also learnt more about better patterns to use when writing contracts to send &amp; receive money.</p>
 <p><a href="https://web.archive.org/web/20220122122006/https://consensys.github.io/smart-contract-best-practices/recommendations/">Reference 1. Sections: Don&rsquo;t use transfer() or send() + Favor pull over push for external calls</a></p>
 <p><a href="https://consensys.net/diligence/blog/2019/09/stop-using-soliditys-transfer-now/">Reference 2. Stop Using Solidity&rsquo;s transfer() Now </a></p>
+<h5 id="10---re-entrancy">10 - Re-entrancy<a href="#10---re-entrancy" class="hanchor" ariaLabel="Anchor">&#8983;</a> </h5>
+<p>The challenge here was to reduce the balance of <code>Reentrance</code> contract to zero.</p>
+<p>Given the popularity of the re-entrancy attacks, I knew exactly what to do: create a smart contract that receives money, <code>donate</code> it to the vulnerable contract and then call <code>withdraw</code>. In addition, I created a <code>receive</code> function which would transfer the amount back to me and call <code>withdraw</code> again creating a cycle where I would keep receieving money in small amounts until the contract&rsquo;s balance is zero.</p>
+<p>For me, the hard part was figuring out how to call the <code>Reentrance</code>&rsquo;s methods inside my contract without importing the contract since it was using an old solidity compiler with old <code>SafeMath</code> library which I assumed would be tricky to import/locate. And so, I attempted to use low level functions such as <code>abi.encodeWithSignature</code> and <code>call</code> but encountered issues which would revert my calls to <code>withdraw</code>. So, I went reconsidered importing contracts and it worked just fine!</p>
+<p><a href="https://github.com/gaavar/anu-x-ethernaut/blob/main/10-reentrancy.sol">Here&rsquo;s</a> my contract for reference.</p>
 
       </div></div>
 
