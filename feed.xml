@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<rss version="2.0">
+<channel>
+  <title>Anu Gaavar's website</title>
+  <link>https://escapelocal.host/</link>
+  <description>Anu Gaavar's website</description>
+  <image>
+      <url>http://escapelocal.host/images/icon.png</url>
+      <title>Anu Gaavar's website</title>
+      <link>https://escapelocal.host/</link>
+  </image>
+
+<item>
+<title>Ethernaut solutions</title>
+<link>https://escapelocal.host/general/2022/12/24/ethernaut.html</link>
+<guid>https://escapelocal.host/general/2022/12/24/ethernaut.html</guid>
+<pubDate>Sat, 24 Dec 2022 00:00:00 +0000</pubDate>
+<description></description>
+</item>
+
+</channel>
+</rss>

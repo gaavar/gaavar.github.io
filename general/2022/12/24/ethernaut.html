@@ -1,0 +1,231 @@
+
+
+<!DOCTYPE html>
+<html>
+<meta charset="UTF-8">
+<style>
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #1c1c1c;
+        color: white;
+    }
+    .markdown-body table tr {
+        background-color: #1c1c1c;
+    }
+    .markdown-body table tr:nth-child(2n) {
+        background-color: black;
+    }
+}
+</style>
+
+
+
+<link rel="alternate" type="application/rss+xml" href="../../../../feed.xml" title="Ethernaut solutions">
+
+
+
+<link rel="stylesheet" type="text/css" href="../../../../css/common-vendor.b8ecfc406ac0b5f77a26.css">
+<link rel="stylesheet" type="text/css" href="../../../../css/fretboard.f32f2a8d5293869f0195.css">
+<link rel="stylesheet" type="text/css" href="../../../../css/pretty.0ae3265014f89d9850bf.css">
+<link rel="stylesheet" type="text/css" href="../../../../css/pretty-vendor.83ac49e057c3eac4fce3.css">
+<link rel="stylesheet" type="text/css" href="../../../../css/global.css">
+<link rel="stylesheet" type="text/css" href="../../../../css/misc.css">
+
+<script type="text/x-mathjax-config">
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\(', '\)']]
+  },
+  svg: {
+    fontCache: 'global',
+  }
+};
+</script>
+<script type="text/javascript" id="MathJax-script" async
+  src="../../../../scripts/tex-svg.js">
+</script>
+
+<style>
+</style>
+
+<div id="doc" class="container-fluid markdown-body comment-enabled" data-hard-breaks="true">
+
+<div id="color-mode-switch">
+  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+  </svg>
+  <input type="checkbox" id="switch" />
+  <label for="switch">Dark Mode Toggle</label>
+  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+  </svg>
+</div>
+
+<script type="text/javascript">
+  // Update root html class to set CSS colors
+  const toggleDarkMode = () => {
+    const root = document.querySelector('html');
+    root.classList.toggle('dark');
+  }
+
+  // Update local storage value for colorScheme
+  const toggleColorScheme = () => {
+    const colorScheme = localStorage.getItem('colorScheme');
+    if (colorScheme === 'light') localStorage.setItem('colorScheme', 'dark');
+    else localStorage.setItem('colorScheme', 'light');
+  }
+
+  // Set toggle input handler
+  const toggle = document.querySelector('#color-mode-switch input[type="checkbox"]');
+  if (toggle) toggle.onclick = () => {
+    toggleDarkMode();
+    toggleColorScheme();
+  }
+
+  // Check for color scheme on init
+  const checkColorScheme = () => {
+    const colorScheme = localStorage.getItem('colorScheme');
+    // Default to light for first view
+    if (colorScheme === null || colorScheme === undefined) localStorage.setItem('colorScheme', 'light');
+    // If previously saved to dark, toggle switch and update colors
+    if (colorScheme === 'dark') {
+      toggle.checked = true;
+      toggleDarkMode();
+    }
+  }
+  checkColorScheme();
+</script>
+
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Ethernaut solutions" />
+<meta name="twitter:image" content="http://escapelocal.host/images/icon.png" />
+
+
+<br>
+<h1 style="margin-bottom:7px"> Ethernaut solutions </h1>
+<small style="float:left; color: #888"> 2022 Dec 24 </small>
+<small style="float:right; color: #888"><a href="../../../../index.html">See all posts</a></small>
+<br> <br> <br>
+<title> Ethernaut solutions </title>
+
+<h4 id="background-and-motivation">Background and Motivation</h4>
+<p>In case you're wondering <a
+href="https://ethernaut.openzeppelin.com/">what's Ethernaut?</a></p>
+<p>I started this as an excuse to continue exploring EVM engineering and
+security challenges. My goal for this year is to discover smart contract
+security bugs in the wild and responsibly disclose them. The real life
+vulnerabilities are probably more complex but this a fun starting
+point.</p>
+<h5 id="fallback">01 - Fallback</h5>
+<p>This was pretty simple. I used the browser developer console for this
+challenge.</p>
+<p>To become the owner of this contract, we need to call
+<code>receive</code> function which sets the owner. Since we need to
+satisfy the <code>require</code> constraints, we must first call
+<code>contribute</code> with a small matic.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode js"><code class="sourceCode javascript"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>contract<span class="op">.</span><span class="fu">contribute</span>({<span class="dt">value</span><span class="op">:</span> <span class="fu">toWei</span>(<span class="st">&#39;0.00001&#39;</span>)})</span></code></pre></div>
+<p>Then, we can assume ownernship with a payload like the one below that
+satisfies the contraints.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode js"><code class="sourceCode javascript"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">await</span> web3<span class="op">.</span><span class="at">eth</span><span class="op">.</span><span class="fu">sendTransaction</span>({</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">from</span><span class="op">:</span> <span class="st">&#39;&lt;my address&gt;&#39;</span><span class="op">,</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">to</span><span class="op">:</span> <span class="st">&#39;contract address&#39;</span><span class="op">,</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">value</span><span class="op">:</span> <span class="fu">toWei</span>(<span class="st">&#39;0.0001&#39;</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span></code></pre></div>
+<p>Finally, we drain the wallet.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode js"><code class="sourceCode javascript"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">await</span> contract<span class="op">.</span><span class="fu">withdraw</span>()</span></code></pre></div>
+<h5 id="fallout">02 - Fallout</h5>
+<p>This one seemed to be okay at the first glance. But, then the usage
+of a function as a contructor caught my attention.</p>
+<p>So, assuming ownership was very straightfoward.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode js"><code class="sourceCode javascript"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="cf">await</span> contract<span class="op">.</span><span class="fu">Fal1out</span>({<span class="dt">value</span><span class="op">:</span> <span class="fu">toWei</span>(<span class="st">&#39;0.0000001&#39;</span>)})</span></code></pre></div>
+<h5 id="coin-flip">03 - Coin Flip</h5>
+<p>To clear this stage, the coin flip needs to be guesssed correctly
+straight for 10 times consecutively. The <code>block.number</code> seems
+to be the source of the pseudo random process which determines the
+<code>side</code>. It would be difficult to ensure that our transactions
+are included in particular blocks to ensure correct
+<code>_guess</code>.</p>
+<p>After some research, it became clear to me that an easy way to solve
+this challenge is to create another smart contract that calls the
+vulnerable smart contract, passing the computed <code>_guess</code>.
+Then, solving the challenge is very easy: submit 10 transactions from
+your smart contract.</p>
+<p><a
+href="https://github.com/gaavar/anu-x-ethernaut/blob/main/3-coinflip.sol">Here's</a>
+my contract for reference.</p>
+<h5 id="telephone">04 - Telephone</h5>
+<p>To become an owner of this contract, I have to ensure that
+<code>tx.origin</code> is not the same as <code>msg.sender</code>.</p>
+<p>The key insight for this is explained in <a
+href="https://ethereum.stackexchange.com/questions/1891/whats-the-difference-between-msg-sender-and-tx-origin">this
+stackoverflow post</a>!</p>
+<p>And so, I just made a contract with a function to call the vulnerable
+contract such that the <code>tx.origin</code> is my externally owned
+account and the <code>msg.sender</code> is my contract.</p>
+<p><a
+href="https://github.com/gaavar/anu-x-ethernaut/blob/main/4-telephone.sol">Here's</a>
+my contract for reference.</p>
+<h5 id="token">05 - Token</h5>
+<p>The goal here is to get more tokens than what you originally have. It
+was easy to spot that <code>uint</code> can overflow since it has a
+range from 0 to 2^256-1.</p>
+<p>So any number greater than 20 will result in the <code>require</code>
+statement to evaluate the resulant number on that range in a circular
+fashion.</p>
+<p>Then the next line in the vulnerable contract will just increase my
+address balance.</p>
+<p>Here's a sample payload:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode js"><code class="sourceCode javascript"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="cf">await</span> contract<span class="op">.</span><span class="fu">transfer</span>(<span class="st">&quot;0xdE245C9453c5DC631b83fC417154950bEE7cA676&quot;</span><span class="op">,</span> <span class="dv">21</span>)<span class="op">;</span></span></code></pre></div>
+<h5 id="delegation">06 - Delegation</h5>
+<p>The key insight into this challenge is to understand the
+<code>fallback</code> &amp; <code>delegatecall</code> functions.</p>
+<p>The fallback in solidity is designed to handle cases when someone
+calls a method on smart contract that is not defined. More specifically,
+fallback gets triggered when the function selector doesn't match with
+any of the function selectors for the methods available on a
+contract.</p>
+<p>Inside the fallback function of the vulnerable smart contract,
+<code>delegatecall</code> allows <code>Delegate</code> to use the logic
+contained withing it to modify the state of <code>Delegation</code>.
+Side note: this functionality is key to developing upgradeable smart
+contracts.</p>
+<p>And so in this case, all I needed was to trigger the fallback
+function in such a way that the call to <code>pwn</code> is delegated to
+<code>Delegate</code> which should change the <code>owner</code>
+variable of the <code>Delegation</code> contract.</p>
+<p>Here's how I accomplished this:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode js"><code class="sourceCode javascript"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="cf">await</span> contract<span class="op">.</span><span class="fu">sendTransaction</span>({</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">from</span><span class="op">:</span> player<span class="op">,</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">data</span><span class="op">:</span> web3<span class="op">.</span><span class="at">eth</span><span class="op">.</span><span class="at">abi</span><span class="op">.</span><span class="fu">encodeFunctionSignature</span>(<span class="st">&quot;pwn()&quot;</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span></code></pre></div>
+<p>Since <code>pwn</code> is not defined in <code>Delegation</code>,
+<code>fallback</code> picks this request and asks <code>Delegate</code>
+to deal with this call. <code>pwn</code> is defined in
+<code>Delegate</code> which changes <code>Delegation</code>'s
+<code>owner</code> value.</p>
+<h5 id="force">07 - Force</h5>
+<p>The challenge here is to send money to a contract that doesn't
+contain a payable method or a receieve function.</p>
+<p>I looked up the (solidity language
+reference)[https://docs.soliditylang.org/en/latest/contracts.html] and
+found the key insight:</p>
+<pre><code>A contract without a receive Ether function can receive Ether as a recipient
+of a coinbase transaction (aka miner block reward) or as a destination of a
+selfdestruct.</code></pre>
+<p>The first option would be an overkill since we would need to setup a
+mining client and mine transactions. I used the second option to create
+an attack smart contract that receives money through a payable method
+and calls selfdestruct.</p>
+<p><a
+href="https://github.com/gaavar/anu-x-ethernaut/blob/main/7-force.sol">Here's</a>
+my contract for reference.</p>
+<p>After deploying the contract, I called the payable function with some
+money.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode js"><code class="sourceCode javascript"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="cf">await</span> web3<span class="op">.</span><span class="at">eth</span><span class="op">.</span><span class="fu">sendTransaction</span>({</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">from</span><span class="op">:</span> player<span class="op">,</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">to</span><span class="op">:</span> <span class="st">&quot;0xF020567e34005065f8A9C27eb048B00405F9a59C&quot;</span><span class="op">,</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">value</span><span class="op">:</span> <span class="fu">toWei</span>(<span class="st">&#39;0.00001&#39;</span>)<span class="op">,</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">data</span><span class="op">:</span> web3<span class="op">.</span><span class="at">eth</span><span class="op">.</span><span class="at">abi</span><span class="op">.</span><span class="fu">encodeFunctionSignature</span>(<span class="st">&quot;sendSchmoney()&quot;</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span></code></pre></div>
+ </div> 
